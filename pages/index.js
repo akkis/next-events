@@ -1,12 +1,14 @@
-import styles from "../styles/Home.module.css";
+import { getFeaturedEvents } from "../dummy-data";
+import EventList from "../components/events/EventList";
 
 export default function Home() {
+  const featuredEvents = getFeaturedEvents();
+
+
   return (
-    <div className={styles.container}>
+    <div className="">
       <h1>Home page</h1>
-      <section>
-        <h2>All featured events...</h2>
-      </section>
+      <EventList items={featuredEvents} />
     </div>
   );
 }
