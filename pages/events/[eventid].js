@@ -1,12 +1,19 @@
 import { useRouter } from "next/router";
+import { getEventById } from "../../dummy-data";
 
 export default function EventPage() {
   const router = useRouter();
 
+  const eventId = router.query.eventId;
+  const event = getEventById(eventId);
+
+  if (!event) {
+    return <p>Ne event found!</p>;
+  }
+
   return (
     <div>
-      <h2>Single Event Page here...</h2>
-      {router.query.eventid && <h3>Event ID:{router.query.eventid}</h3>}
+      <h1>Event Details</h1>
     </div>
   );
 }
