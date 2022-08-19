@@ -1,5 +1,10 @@
+import { Fragment } from "react";
 import { useRouter } from "next/router";
 import { getEventById } from "../../dummy-data";
+import EventSummary from "../../components/event-detail/event-summary";
+import EventLogistics from "../../components/event-detail/event-logistics";
+import EventContent from "../../components/event-detail/event-content";
+import DefaultErrorPage from 'next/error';
 
 export default function EventPage() {
   const router = useRouter();
@@ -8,12 +13,21 @@ export default function EventPage() {
   const event = getEventById(eventId);
 
   if (!event) {
-    return <p>Ne event found!</p>;
+    return <DefaultErrorPage statusCode={404} />;
   }
 
   return (
-    <div>
-      <h1>Event Details</h1>
-    </div>
+    <Fragment>
+      <EventSummary title={event.title} />
+      <EventLogistics
+        date={event.date}
+        address={event.location}
+        image={event.image}
+        imageAlt={event.title}
+      />
+      <EventContent>
+        <p>{event.description}</p>
+      </EventContent>
+    </Fragment>
   );
 }
