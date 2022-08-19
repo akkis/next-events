@@ -4,7 +4,9 @@ import { getEventById } from "../../dummy-data";
 import EventSummary from "../../components/event-detail/event-summary";
 import EventLogistics from "../../components/event-detail/event-logistics";
 import EventContent from "../../components/event-detail/event-content";
-import DefaultErrorPage from 'next/error';
+import DefaultErrorPage from "next/error";
+import ErrorAlert from "../../components/ui/error-alert";
+import Button from "../../components/ui/Button";
 
 export default function EventPage() {
   const router = useRouter();
@@ -13,7 +15,16 @@ export default function EventPage() {
   const event = getEventById(eventId);
 
   if (!event) {
-    return <DefaultErrorPage statusCode={404} />;
+    return (
+      <Fragment>
+        <ErrorAlert>
+          <p>Ne event found!</p>
+        </ErrorAlert>
+        <p className="center">
+          <Button link="/events">Show all events</Button>
+        </p>
+      </Fragment>
+    );
   }
 
   return (

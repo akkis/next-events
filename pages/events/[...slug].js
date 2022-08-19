@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import EventList from "../../components/events/EventList";
-import { getFilteredEvents } from '../../dummy-data';
+import ResultsTitle from "../../components/events/results-title";
+import Button from "../../components/ui/Button";
+import { getFilteredEvents } from "../../dummy-data";
+import ErrorAlert from "../../components/ui/error-alert";
 
 export default function FilteredEventsPage() {
   const router = useRouter();
@@ -18,21 +21,46 @@ export default function FilteredEventsPage() {
   const numYear = +filteredYear;
   const numMonth = +filteredMonth;
 
-  if (isNaN(numYear) || isNaN(numMonth) || numYear > 2030 || numYear < 2021 || numMonth < 1 || numMonth > 12) {
-    return <p>Invalid filter. Please abjust your values!</p>
+  if (
+    isNaN(numYear) ||
+    isNaN(numMonth) ||
+    numYear > 2030 ||
+    numYear < 2021 ||
+    numMonth < 1 ||
+    numMonth > 12
+  ) {
+    return (
+      <Fragment>
+        <div className="center">
+          <ErrorAlert>
+            <p>Invalid filter. Please abjust your values!</p>
+          </ErrorAlert>
+          <Button link="/events">Show all events</Button>
+        </div>
+      </Fragment>
+    );
   }
 
-  const filteredEvents = getFilteredEvents({year: numYear, month: numMonth})
+  const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth });
 
-  if (! filteredEvents || filteredEvents.length === 0) {
-    return <p>No Events found for the chosen filter!</p>
+  if (!filteredEvents || filteredEvents.length === 0) {
+    return (
+      <Fragment>
+        <div className="center">
+          <ErrorAlert>
+            <p>No Events found for the chosen filter!</p>
+          </ErrorAlert>
+          <Button link="/events">Show all events</Button>
+        </div>
+      </Fragment>
+    );
   }
+
+  const theDate = new Date(numYear, numMonth - 1);
 
   return (
     <Fragment>
-      <h1 className="center">Showing events with filters:</h1>
-      <p className="center">Year: {filteredYear}</p>
-      <p className="center">Month: {filteredMonth}</p>
+      <ResultsTitle date={theDate} />
       <EventList items={filteredEvents} />
     </Fragment>
   );
