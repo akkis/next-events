@@ -63,6 +63,6 @@ export async function getStaticPaths(context) {
 
   return {
     paths: paramPaths,
-    fallback: false,
+    fallback: 'blocking',
   };
 }
